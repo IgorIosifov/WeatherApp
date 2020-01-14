@@ -2,7 +2,26 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "c/detail": [
+                "detail/detail.js"
+            ],
+            "c/list": [
+                "list/list.js"
+            ],
+            "c/selector": [
+                "selector/selector.js"
+            ],
+            "c/tile": [
+                "tile/tile.js"
+            ],
+            "c/weatherWidget": [
+                "weatherWidget/weatherWidget.js"
+            ],
+            "c/data": [
+                "data/data.js"
+            ]
+        }
     },
     "include": [
         "**/*",

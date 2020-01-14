@@ -1,0 +1,18 @@
+<template>
+    <div class="wrapper">
+    <header class="header">Select a forecast</header>
+    <section class="content">
+        <!-- <main>
+            <c-data>data</c-data>
+        </main> -->
+        <div class="columns">
+        <main class="main" >
+            <c-list onproductselected={handleProductSelected}></c-list>
+        </main>
+        <aside class="sidebar-second">
+            <c-detail product-id={selectedProductId}></c-detail>
+        </aside>
+        </div>
+    </section>
+    </div>
+</template>

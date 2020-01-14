@@ -1,0 +1,16 @@
+<template>
+    <template if:true={product}>
+        <div class="container">
+            <div class="temp">Temperature: {product.main.temp}</div>
+            <div class="feels_like">Feels like: {product.main.feels_like}</div>
+            <div class="pressure">Pressure: {product.main.pressure}</div>
+            <div class="humidity">Humidity: {product.main.humidity}</div>
+            <div class="weatherDescription">Description: {product.weather.description}</div>
+            <div class="windSpeed">Wind speed: {product.wind.speed}</div>
+            <div class="dateTime">Forecast date and time: {product.dt_txt}</div>
+        </div>
+    </template>
+    <template if:false={product}>
+        <div>Select a bike</div>
+    </template>
+</template>
