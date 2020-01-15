@@ -1,14 +1,16 @@
-import { LightningElement } from 'lwc';
-import { bikes } from 'c/data';
+import { LightningElement, track,api } from 'lwc';
+
 
 export default class List extends LightningElement {
-    bikes = bikes;
+    @track bikes;
+    @api bks;
 
     handleTileClick(evt) {
         // This component wants to emit a productselected event to its parent
         const event = new CustomEvent('productselected', {
             detail: evt.detail
         });
+        
         // Fire the event from c-list
         this.dispatchEvent(event);
     }

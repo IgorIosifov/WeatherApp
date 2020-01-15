@@ -1,17 +1,23 @@
-import { LightningElement, track} from 'lwc';
+import { LightningElement, track,api} from 'lwc';
 
 export default class Selector extends LightningElement {
-    @track selectedProductId;
-
+    @track weatherToDetail;
+    @track bikes;
+    
+    
     handleProductSelected(evt) {
-        this.selectedProductId = evt.detail;
+        this.weatherToDetail = evt.detail;
+        this.weatherToDetail = this.bikes.find(bike => bike.dt === evt.detail);
+        console.log('there is a selected product');
     }
 
-    // getForecast() {
-    //     const getnewforecast = new Event();
-    //     // Fire the event from c-tile
-    //     dispatchEvent(getnewforecast);
-    //     console.log('imhere');
-    // }
+    getForecast(evt) {
+        this.bikes = evt.detail;
+        console.log(this.bikes);
+    }
+
+    getCurrentWeather(evt) {
+        this.weatherToDetail=evt.detail;
+    }
 }
 

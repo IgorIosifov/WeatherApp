@@ -1,24 +1,24 @@
 import { LightningElement, track, api } from 'lwc';
-import { bikes } from 'c/data';
 
 
 export default class Detail extends LightningElement {
-
-    // Ensure changes are reactive when product is updated
+    
     @track product;
 
-    // Private var to track @api productId
-    _productId = undefined;
-
-    // Use set and get to process the value every time it's
-    // requested while switching between products
-    set productId(value) {
-        this._productId = value;
-        this.product = bikes.find(bike => bike.dt === value);
+    set chosenProduct(value) {
+        this.product = value;
     }
     
-    // getter for productId
-    @api get productId(){
-        return this._productId;
+    @api get chosenProduct(){
+        return this.product;
+    }
+
+    get weatherDescription(){
+        return this.product.weather[0].description;
+    }
+
+    get pressure(){
+        const convertPressureFromHPatoMmHg = 0.750062;
+        return Math.round(this.product.main.pressure*convertPressureFromHPatoMmHg);
     }
 }

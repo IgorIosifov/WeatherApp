@@ -26,16 +26,12 @@ body {
 }
 .main{
   flex: 1;
-  order: 2;
+  order: 1;
   background: #eee;
 }
-.sidebar-first{
+.sidebar{
   width: 20%;
-  background: #ccc;
-  order: 1;
+  background: #eee;
+  order: 2;
 }
-.sidebar-second{ 
-  width: 30%;
-  order: 3;
-  background: #ddd;
-}
+

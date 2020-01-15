@@ -1,6 +1,8 @@
 <template>
+<template if:true={bks}>
+
     <div class="container">
-        <template for:each={bikes} for:item="bike">
+        <template for:each={bks} for:item="bike">
             <c-tile 
                 key={bike.dt} 
                 product={bike} 
@@ -8,4 +10,9 @@
             </c-tile>
         </template>
     </div>
+
+</template>
+<template if:false={bks}>
+    <main>Choose a city</main>
+</template>
 </template>

@@ -3,6 +3,9 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "c/data": [
+                "data/data.js"
+            ],
             "c/detail": [
                 "detail/detail.js"
             ],
@@ -17,9 +20,6 @@
             ],
             "c/weatherWidget": [
                 "weatherWidget/weatherWidget.js"
-            ],
-            "c/data": [
-                "data/data.js"
             ]
         }
     },

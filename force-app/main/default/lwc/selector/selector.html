@@ -2,17 +2,17 @@
     <div class="wrapper">
     <header class="header">Select a forecast</header>
     <section class="content">
-        <!-- <main>
-            <c-data>data</c-data>
-        </main> -->
+   
         <div class="columns">
         <main class="main" >
-            <c-list onproductselected={handleProductSelected}></c-list>
+            <c-data  onweathernow={getCurrentWeather} onforecastclick={getForecast}></c-data>
+            <c-list onproductselected={handleProductSelected} bks={bikes}></c-list>
         </main>
-        <aside class="sidebar-second">
-            <c-detail product-id={selectedProductId}></c-detail>
+        <aside class="sidebar">
+            <c-detail chosen-product={weatherToDetail}></c-detail>
         </aside>
         </div>
+  
     </section>
     </div>
 </template>
