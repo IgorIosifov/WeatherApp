@@ -1,26 +1,39 @@
-import { LightningElement, api } from 'lwc';
-
+import { LightningElement, track,api } from 'lwc';
+import {fahrenheitToCelsius} from 'c/utils';
 export default class Tile extends LightningElement {
     @api product;
+    @api unitTile;
+
+
+    
 
     tileClick() {
         const event = new CustomEvent('tileclick', {
-            // detail contains only primitives
             detail: this.product.dt
         });
-        // Fire the event from c-tile
+   
         this.dispatchEvent(event);
     }
 
     get timeAndDate(){
-        return this.product.dt_txt;
+        return this.product.dt*1000;
     }
-
+    
     get temperature() {
-        var currentTemp = Math.round(this.product.main.temp);
-        if (currentTemp>0) {
-            return '+' + currentTemp;
+        var currentTemp;
+        if (this.unitTile==='C'){
+            currentTemp = Math.round(this.product.main.temp);
         }
-        return currentTemp;
+        else {
+            currentTemp = Math.round(fahrenheitToCelsius(this.product.main.temp));
+        }
+        if (currentTemp>0) {
+            return '+' + currentTemp + ' °' + this.unitTile;
+        }
+        return currentTemp + ' °' + this.unitTile;
+    }
+    get pictureLink(){
+        return 'http://openweathermap.org/img/wn/'+this.product.weather[0].icon+'@2x.png'; 
     }
 }
+

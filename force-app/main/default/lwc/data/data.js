@@ -1,42 +1,87 @@
-import { LightningElement} from 'lwc';
+import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class Data extends LightningElement {
 
     getCurrentWeather() {
-        let request = new XMLHttpRequest();
-        let city = this.template.querySelector('lightning-input').value;
-        let requestAPI = 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric';
-        var currentWeather;
-        request.open('GET', requestAPI,false);
-        request.onload = function () {
-            currentWeather = JSON.parse(this.response);
-        }
-        request.send();
-        const event = new CustomEvent('weathernow', {
-            detail: currentWeather
-        });
-        // Fire the event from c-tile
-        this.dispatchEvent(event);
-    }
-    
-    getWeatherForecast() {
-        
-        let request = new XMLHttpRequest();
-        let city = this.template.querySelector('lightning-input').value;
-        let requestAPI = 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric';
+        this.getCityFromInput()
+            .then(city => { return this.httpRequest('weather', city); })
+            .then(result => { this.eventsCreator(result) })
 
-        var bikes;
-        request.open('GET', requestAPI,false);
-        request.onload = function () {
-          // Begin accessing JSON data here
-          bikes = JSON.parse(this.response).list;
-        }
-        request.send();
-        const event = new CustomEvent('forecastclick', {
-            detail: bikes
-        });
-        // Fire the event from c-tile
-        this.dispatchEvent(event);
     }
+
+    getWeatherForecast() {
+        this.getCityFromInput()
+            .then(city => { return this.httpRequest('forecast', city); })
+            .then(result => { this.eventsCreator(result) })
+    }
+
+
+    getCityFromInput() {
+        return new Promise(
+            (resolve,reject) => {
+                if (this.template.querySelector('lightning-input').value === '') {
+                    reject(this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Wrong input',
+                            message: 'Please enter a city.',
+                            variant: 'warning',
+                            mode: 'pester'
+                        })));
+                } else {
+                    resolve(this.template.querySelector('lightning-input').value);
+                }
+
+            })
+    }
+
+
+    httpRequest(type, city) {
+        return new Promise(function (resolve) {
+            
+                var request = new XMLHttpRequest();
+                let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?q=' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric';
+               
+                request.open('GET', requestAPI, true);
+                request.onload = function () {
+                    resolve(this.response);
+                }
+                request.send();
+        });
+    }
+
+
+eventsCreator(result) {
+    let currentWeather = JSON.parse(result);
+    var event;
+    if (currentWeather.cod >= 200 && currentWeather.cod < 400) {
+        if (currentWeather.cnt == null) {
+            event = new CustomEvent('weathernow', {
+                detail: currentWeather
+            });
+        } else {
+            event = new CustomEvent('forecast', {
+                detail: currentWeather.list
+            });
+        }
+
+    } if (currentWeather.cod >= 400 && currentWeather.cod < 500) {
+        event = new ShowToastEvent({
+            title: 'Wrong input',
+            message: 'Could not find this city. Please check typos or enter regional center.',
+            variant: 'warning',
+            mode: 'pester'
+        });
+
+    } if (currentWeather.cod >= 500) {
+        event = new ShowToastEvent({
+            title: 'Server error',
+            message: 'An internal server error has occured. Please come back later.',
+            variant: 'warning',
+            mode: 'pester'
+        });
+
+    } this.dispatchEvent(event);
+}
 }
 

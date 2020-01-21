@@ -6,13 +6,14 @@
             <c-tile 
                 key={bike.dt} 
                 product={bike} 
-                ontileclick={handleTileClick}>
+                ontileclick={handleTileClick}
+                unit-tile={unit}>
             </c-tile>
         </template>
     </div>
 
 </template>
 <template if:false={bks}>
-    <main>Choose a city</main>
+    <main>No data to display</main>
 </template>
 </template>

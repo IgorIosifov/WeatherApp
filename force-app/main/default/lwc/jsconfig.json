@@ -18,6 +18,9 @@
             "c/tile": [
                 "tile/tile.js"
             ],
+            "c/utils": [
+                "utils/utils.js"
+            ],
             "c/weatherWidget": [
                 "weatherWidget/weatherWidget.js"
             ]

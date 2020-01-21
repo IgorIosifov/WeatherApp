@@ -1,18 +1,16 @@
 <template>
     <div class="wrapper">
-    <header class="header">Select a forecast</header>
     <section class="content">
    
         <div class="columns">
         <main class="main" >
-            <c-data  onweathernow={getCurrentWeather} onforecastclick={getForecast}></c-data>
-            <c-list onproductselected={handleProductSelected} bks={bikes}></c-list>
+            <c-data  onweathernow={getCurrentWeather} onforecast={getForecast}></c-data>
+            <c-list onproductselected={handleProductSelected} bks={bikes} unit={unit}></c-list>
         </main>
         <aside class="sidebar">
-            <c-detail chosen-product={weatherToDetail}></c-detail>
+            <c-detail chosen-product={weatherToDetail} onchangeunit={setNewUnit}></c-detail>
         </aside>
         </div>
-  
     </section>
     </div>
 </template>

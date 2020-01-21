@@ -1,20 +1,45 @@
 <template>
+    <div class="container">
     <template if:true={product}>
-        <div class="container">
-            <div class="temp">Temperature: {product.main.temp} ℃</div>
-            <div class="feels_like">Feels like: {product.main.feels_like} ℃</div>
+        
+        <fieldset class="slds-form-element">
+            <div class="slds-form-element__control ">
+                <template for:each={options} for:item="opt">
+                    <span  key={opt.value} class="slds-radio myRadio">
+                   <input 
+                      class="singleRadio" 
+                      type="radio" 
+                      id={opt.value} 
+                      value={opt.value} 
+                      name="Myoptions" 
+                      onchange={handleradiochange}
+                      checked={opt.checked}/>
+                      <label class="slds-radio__label" for={opt.value}>
+                        <span class="slds-radio_faux">   </span>
+                        <span class="slds-form-element__label">{opt.label}</span>
+                    </label>
+                    </span>
+                   </template>
+            </div>
+          </fieldset>
+            <img class="product-img" src={link}></img>
+            <div class="temp">Temperature: {temperature} °{unit}</div>
+            <div class="feels_like">Feels like: {feelsLike} °{unit}</div>
             <div class="pressure">Pressure: {pressure} mmHg</div>
             <div class="humidity">Humidity: {product.main.humidity} %</div>
             <div class="weatherDescription">Description: {weatherDescription}</div>
             <div class="windSpeed">Wind speed: {product.wind.speed} m/sec</div>
+            <div class="windDirection">Wind direction: {windDirection}</div>
             <template if:true={product.dt_txt}>
             <div class="dateTime">Forecast date and time: {product.dt_txt}</div>
             </template>
-        </div> 
+        
     </template>
 
     <template if:false={product}>
-        <div>No city selected</div>
+        <div>No data to display</div>
     </template>
+</div> 
 
 </template>
+

@@ -1,11 +1,10 @@
 <template>
-    <div class="container">
+    <div class="tile_container">
         <a onclick={tileClick}>
-            <div class="title">{timeAndDate}</div>
-        
+            <lightning-formatted-date-time value={timeAndDate} year="numeric" month="numeric" day="numeric" hour="2-digit"  hour12="false"
+                minute="2-digit" time-zone="UTC" ></lightning-formatted-date-time>
                 <div class="title">{temperature}</div>
-            
-            <!-- <img class="product-img" src={product.fields.Picture_URL__c.value}></img> -->
+                <img class="product-img" src={pictureLink}></img>
         </a>
     </div>
 </template>
