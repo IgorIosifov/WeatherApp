@@ -1,19 +1,19 @@
 <template>
-<template if:true={bks}>
+<template if:true={forecasts}>
 
     <div class="container">
-        <template for:each={bks} for:item="bike">
+        <template for:each={forecasts} for:item="bike">
             <c-tile 
                 key={bike.dt} 
-                product={bike} 
+                weatherstodetail={bike} 
                 ontileclick={handleTileClick}
-                unit-tile={unit}>
+                unit={unit}>
             </c-tile>
         </template>
     </div>
 
 </template>
-<template if:false={bks}>
+<template if:false={forecasts}>
     <main>No data to display</main>
 </template>
 </template>

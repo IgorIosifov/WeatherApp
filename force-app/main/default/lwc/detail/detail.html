@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-    <template if:true={product}>
+    <template if:true={weatherToDetail}>
         
-        <fieldset class="slds-form-element">
+        <!-- <fieldset class="slds-form-element">
             <div class="slds-form-element__control ">
                 <template for:each={options} for:item="opt">
                     <span  key={opt.value} class="slds-radio myRadio">
@@ -21,22 +21,31 @@
                     </span>
                    </template>
             </div>
-          </fieldset>
-            <img class="product-img" src={link}></img>
-            <div class="temp">Temperature: {temperature} °{unit}</div>
-            <div class="feels_like">Feels like: {feelsLike} °{unit}</div>
-            <div class="pressure">Pressure: {pressure} mmHg</div>
-            <div class="humidity">Humidity: {product.main.humidity} %</div>
-            <div class="weatherDescription">Description: {weatherDescription}</div>
-            <div class="windSpeed">Wind speed: {product.wind.speed} m/sec</div>
-            <div class="windDirection">Wind direction: {windDirection}</div>
-            <template if:true={product.dt_txt}>
-            <div class="dateTime">Forecast date and time: {product.dt_txt}</div>
+          </fieldset> -->
+
+
+            <lightning-radio-group 
+                                  options={options}
+                                  value={value}
+                                  type="button"
+                                  onchange={handleradiochange}
+                                  ></lightning-radio-group>
+       
+            <img class="weather-img" src={iconLink}></img>
+            <div class="text">Temperature: {temperature} °{unit}</div>
+            <div class="text">Feels like: {feelsLike} °{unit}</div>
+            <div class="text">Pressure: {pressure} mmHg</div>
+            <div class="text">Humidity: {weatherToDetail.main.humidity} %</div>
+            <div class="text">Description: {weatherDescription}</div>
+            <div class="text">Wind speed: {weatherToDetail.wind.speed} m/sec</div>
+            <div class="text">Wind direction: {windDirection}</div>
+            <template if:true={weatherToDetail.dt_txt}>
+            <div class="text">Forecast date and time: {weatherToDetail.dt_txt}</div>
             </template>
         
     </template>
 
-    <template if:false={product}>
+    <template if:false={weatherToDetail}>
         <div>No data to display</div>
     </template>
 </div> 

@@ -1,26 +1,25 @@
 import { LightningElement, track, api } from 'lwc';
-import { fahrenheitToCelsius } from 'c/utils';
+import { degreeToDirection, addPlusOrNot } from 'c/utils';
 
 export default class Detail extends LightningElement {
 
-    @track product;
-    
+    @track weatherToDetail;
 
-    set chosenProduct(value) {
-        this.product = value;
+    set selectedForecast(value) {
+        this.weatherToDetail = value;
     }
 
-    @api get chosenProduct() {
-        return this.product;
+    @api get selectedForecast() {
+        return this.weatherToDetail;
     }
 
     get weatherDescription() {
-        return this.product.weather[0].description;
+        return this.weatherToDetail.weather[0].description;
     }
 
     get pressure() {
-        const convertPressureFromHPatoMmHg = 0.750062;
-        return Math.round(this.product.main.pressure * convertPressureFromHPatoMmHg);
+        const CONVERT_PRESSURE_FROM_HPA_TO_MMHG = 0.750062;
+        return Math.round(this.weatherToDetail.main.pressure * CONVERT_PRESSURE_FROM_HPA_TO_MMHG);
     }
 
     @track selectedUnit = 'C';
@@ -36,67 +35,27 @@ export default class Detail extends LightningElement {
         const changeunit = new CustomEvent('changeunit', {
             detail: this.selectedUnit
         });
-        // Fire the event from c-list
         this.dispatchEvent(changeunit);
     }
-    
+
     @api get unit() {
         return this.selectedUnit;
     }
 
     get temperature() {
-        const currentTemp = this.product.main.temp;
-        if (this.selectedUnit === 'C') {
-            if (currentTemp > 0) {
-                return '+' + Math.round(currentTemp) ;
-            } return Math.round(currentTemp);
-        }
-        if (fahrenheitToCelsius(currentTemp) > 0) {
-            return '+' + Math.round(fahrenheitToCelsius(currentTemp));
-        } return Math.round(fahrenheitToCelsius(currentTemp));
-    }    
+        const currentTemp = this.weatherToDetail.main.temp;
+        return addPlusOrNot(currentTemp, this.selectedUnit);
+    }
 
-get feelsLike(){
-    const feels_like = this.product.main.feels_like;
-    if (this.selectedUnit === 'C') {
-        if (feels_like > 0) {
-            return '+' + Math.round(feels_like) ;
-        } return Math.round(feels_like);
+    get feelsLike() {
+        const feels_like = this.weatherToDetail.main.feels_like;
+        return addPlusOrNot(feels_like, this.selectedUnit);
     }
-    if (fahrenheitToCelsius(feels_like) > 0) {
-        return '+' + Math.round(fahrenheitToCelsius(feels_like));
-    } return Math.round(fahrenheitToCelsius(feels_like));
-}
 
-get windDirection(){
-    const step = 22.5;
-    if (this.product.wind.deg < step) {
-        return 'N';
+    get windDirection() {
+        return degreeToDirection(this.weatherToDetail.wind.deg);
     }
-    if (this.product.wind.deg < step * 3) {
-        return 'NE';
+    get iconLink() {
+        return 'http://openweathermap.org/img/wn/' + this.weatherToDetail.weather[0].icon + '@2x.png';
     }
-    if (this.product.wind.deg < step * 5) {
-        return 'E';
-    }
-    if (this.product.wind.deg < step * 7) {
-        return 'SE';
-    }
-    if (this.product.wind.deg < step * 9) {
-        return 'S';
-    }
-    if (this.product.wind.deg < step * 11) {
-        return 'SW';
-    }
-    if (this.product.wind.deg < step * 13) {
-        return 'W';
-    }
-    if (this.product.wind.deg < step * 15) {
-        return 'NW';
-    }
-    return 'N';
-}
-get link(){
-    return 'http://openweathermap.org/img/wn/'+this.product.weather[0].icon+'@2x.png'; 
-}
 }

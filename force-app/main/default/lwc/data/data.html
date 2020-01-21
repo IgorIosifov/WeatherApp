@@ -1,7 +1,9 @@
 <template>
         <div class="container">
             <lightning-input class='input' name='city' placeholder='Enter a city'></lightning-input>
+            <lightning-button-group>
             <lightning-button label='Get current weather' onclick={getCurrentWeather}></lightning-button>
             <lightning-button label='Get weather forecast' onclick={getWeatherForecast}></lightning-button>
+            </lightning-button-group>  
         </div>
 </template>

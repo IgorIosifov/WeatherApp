@@ -2,8 +2,8 @@ import { LightningElement, track,api } from 'lwc';
 
 
 export default class List extends LightningElement {
-    @track bikes;
-    @api bks;
+    @track forecasts;
+    @api forecasts;
     @api unit;
 
     handleTileClick(evt) {

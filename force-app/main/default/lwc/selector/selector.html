@@ -4,11 +4,11 @@
    
         <div class="columns">
         <main class="main" >
-            <c-data  onweathernow={getCurrentWeather} onforecast={getForecast}></c-data>
-            <c-list onproductselected={handleProductSelected} bks={bikes} unit={unit}></c-list>
+            <c-data  onweathernow={getCurrentWeather} onforecastsfromdata={getForecasts}></c-data>
+            <c-list onproductselected={handleProductSelected} forecasts={forecasts} unit={unit}></c-list>
         </main>
         <aside class="sidebar">
-            <c-detail chosen-product={weatherToDetail} onchangeunit={setNewUnit}></c-detail>
+            <c-detail selected-forecast={weatherToDetail} onchangeunit={setNewUnit}></c-detail>
         </aside>
         </div>
     </section>
