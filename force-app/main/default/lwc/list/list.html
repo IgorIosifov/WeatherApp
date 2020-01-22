@@ -1,8 +1,8 @@
 <template>
-<template if:true={forecasts}>
+<template if:true={forecaststolist}>
 
     <div class="container">
-        <template for:each={forecasts} for:item="forecast">
+        <template for:each={forecaststolist} for:item="forecast">
             <c-tile 
                 key={forecast.dt} 
                 weathertodetail={forecast} 
@@ -13,7 +13,7 @@
     </div>
 
 </template>
-<template if:false={forecasts}>
+<template if:false={forecaststolist}>
     <main>No data to display</main>
 </template>
 </template>

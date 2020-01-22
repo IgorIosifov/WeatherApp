@@ -6,12 +6,14 @@ export default class Tile extends LightningElement {
 
     tileClick() {
         const event = new CustomEvent('tileclick', {
+            //this.weathertodetail.dt means timestamp, UNIX. I use it as an unique id for each forecast. 
             detail: this.weathertodetail.dt
         });
         this.dispatchEvent(event);
     }
 
     get timeAndDate(){
+        //converting seconds to milliseconds
         return this.weathertodetail.dt*1000;
     }
     

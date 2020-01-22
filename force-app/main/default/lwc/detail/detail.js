@@ -13,14 +13,7 @@ export default class Detail extends LightningElement {
         return this.weatherToDetail;
     }
 
-    get weatherDescription() {
-        return this.weatherToDetail.weather[0].description;
-    }
-
-    get pressure() {
-        const CONVERT_PRESSURE_FROM_HPA_TO_MMHG = 0.750062;
-        return Math.round(this.weatherToDetail.main.pressure * CONVERT_PRESSURE_FROM_HPA_TO_MMHG);
-    }
+    // this block is responsible for measurement unit changing
 
     @track selectedUnit = 'C';
     @track options = [
@@ -42,6 +35,7 @@ export default class Detail extends LightningElement {
         return this.selectedUnit;
     }
 
+    //this block is responsible for proper info displaying
     get temperature() {
         const currentTemp = this.weatherToDetail.main.temp;
         return addPlusOrNot(currentTemp, this.selectedUnit);
@@ -57,5 +51,14 @@ export default class Detail extends LightningElement {
     }
     get iconLink() {
         return 'http://openweathermap.org/img/wn/' + this.weatherToDetail.weather[0].icon + '@2x.png';
+    }
+
+    get weatherDescription() {
+        return this.weatherToDetail.weather[0].description;
+    }
+
+    get pressure() {
+        const CONVERT_PRESSURE_FROM_HPA_TO_MMHG = 0.750062;
+        return Math.round(this.weatherToDetail.main.pressure * CONVERT_PRESSURE_FROM_HPA_TO_MMHG);
     }
 }
