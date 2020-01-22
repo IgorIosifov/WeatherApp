@@ -7,8 +7,7 @@ export default class List extends LightningElement {
     @api unit;
 
     handleTileClick(evt) {
-        // This component wants to emit a productselected event to its parent
-        const event = new CustomEvent('productselected', {
+        const event = new CustomEvent('forecastselected', {
             detail: evt.detail
         });
         

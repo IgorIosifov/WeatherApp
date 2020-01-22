@@ -5,7 +5,7 @@
         <div class="columns">
         <main class="main" >
             <c-data  onweathernow={getCurrentWeather} onforecastsfromdata={getForecasts}></c-data>
-            <c-list onproductselected={handleProductSelected} forecasts={forecasts} unit={unit}></c-list>
+            <c-list onforecastselected={handleForecastSelected} forecasts={forecasts} unit={unit}></c-list>
         </main>
         <aside class="sidebar">
             <c-detail selected-forecast={weatherToDetail} onchangeunit={setNewUnit}></c-detail>

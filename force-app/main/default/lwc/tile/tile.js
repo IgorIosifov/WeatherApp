@@ -1,30 +1,26 @@
-import { LightningElement, track,api } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {addPlusOrNot} from 'c/utils';
 export default class Tile extends LightningElement {
-    @api weatherstodetail;
+    @api weathertodetail;
     @api unit;
-
-
-    
 
     tileClick() {
         const event = new CustomEvent('tileclick', {
-            detail: this.weatherstodetail.dt
+            detail: this.weathertodetail.dt
         });
-   
         this.dispatchEvent(event);
     }
 
     get timeAndDate(){
-        return this.weatherstodetail.dt_txt;
+        return this.weathertodetail.dt*1000;
     }
     
     get temperature() {
-        const currentTemp = this.weatherstodetail.main.temp;
+        const currentTemp = this.weathertodetail.main.temp;
         return addPlusOrNot(currentTemp, this.unit);
     }
     get pictureLink(){
-        return 'http://openweathermap.org/img/wn/'+this.weatherstodetail.weather[0].icon+'@2x.png'; 
+        return 'http://openweathermap.org/img/wn/'+this.weathertodetail.weather[0].icon+'@2x.png'; 
     }
 }
 

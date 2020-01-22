@@ -2,10 +2,10 @@
 <template if:true={forecasts}>
 
     <div class="container">
-        <template for:each={forecasts} for:item="bike">
+        <template for:each={forecasts} for:item="forecast">
             <c-tile 
-                key={bike.dt} 
-                weatherstodetail={bike} 
+                key={forecast.dt} 
+                weathertodetail={forecast} 
                 ontileclick={handleTileClick}
                 unit={unit}>
             </c-tile>

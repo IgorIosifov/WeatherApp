@@ -7,4 +7,18 @@
 .input{
     display:flex;
     align-items: center;
+    flex-grow: 1;
+    width: 30%;
+    padding-right: 8px;
 }
+
+.buttons{
+    flex-grow: 1;
+    display: flex;
+    padding: 8px;
+}
+
+.button {
+    width: 100%;
+}
+

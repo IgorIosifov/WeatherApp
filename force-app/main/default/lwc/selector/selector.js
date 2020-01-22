@@ -6,8 +6,7 @@ export default class Selector extends LightningElement {
     @track newUnit;
 
     
-    handleProductSelected(evt) {
-        this.weatherToDetail = evt.detail; //what is it?
+    handleForecastSelected(evt) {
         this.weatherToDetail = this.forecasts.find(forecasts => forecasts.dt === evt.detail);
     }
 

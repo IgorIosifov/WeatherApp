@@ -5,3 +5,9 @@ ebody{
   color: green;
   font-weight: bold;
 }
+.detail{
+  display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
