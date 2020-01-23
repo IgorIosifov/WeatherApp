@@ -1,13 +1,22 @@
-ebody{
-  margin: 0;
-} 
-.price {
-  color: green;
-  font-weight: bold;
-}
+
 .detail{
   display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: flex-start;
+}
+
+.text{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 2vh;
+}
+
+.value{
+  font-weight: bold;
+}
+
+.slds-form-element__label{
+  font-size: 2vh;
 }

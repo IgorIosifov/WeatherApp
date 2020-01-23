@@ -16,6 +16,7 @@ export default class Detail extends LightningElement {
     // this block is responsible for measurement unit changing
 
     @track selectedUnit = 'C';
+    // @track value = 'C';
     @track options = [
         { 'label': '℃', 'value': 'C', checked: true },
         { 'label': '℉', 'value': 'F', checked: false },

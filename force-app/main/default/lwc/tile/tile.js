@@ -24,5 +24,6 @@ export default class Tile extends LightningElement {
     get pictureLink(){
         return 'http://openweathermap.org/img/wn/'+this.weathertodetail.weather[0].icon+'@2x.png'; 
     }
+    
 }
 
