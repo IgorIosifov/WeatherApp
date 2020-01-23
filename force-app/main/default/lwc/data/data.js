@@ -1,5 +1,5 @@
-import { LightningElement } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { LightningElement,track } from 'lwc';
+import { ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 export default class Data extends LightningElement {
 
@@ -12,7 +12,7 @@ export default class Data extends LightningElement {
 
     getWeatherForecast() {
         this.getCityFromInput()
-            .then(city => { return this.httpRequest('forecast', city); })
+            .then(city => { return this.httpRequest('forecast', city, this.days); })
             .then(response => { this.eventsCreator(response) })
     }
 
@@ -33,11 +33,32 @@ export default class Data extends LightningElement {
                 }
             })
     }
+/////////////////////////////////////
+    get days(){
+        return this.value*8;
+    }
 
-    httpRequest(type, city) {
+    @track value = '1';
+    get options() {
+        return [
+            { label: '1 day', value: '1' },
+            { label: '2 days', value: '2' },
+            { label: '3 days', value: '3' },
+            { label: '4 days', value: '4' },
+            { label: '5 days', value: '5' }
+        ];
+    }
+
+    handleChange(event) {
+        this.value = event.detail.value;
+    }
+/////////////////////////////////////
+
+    httpRequest(type, city, days) {
         return new Promise(function (resolve) {
             let request = new XMLHttpRequest();
-            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?q=' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric';
+            console.log(days);
+            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?q=' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + days;
             request.open('GET', requestAPI, true);
             request.onload = function () {
                 resolve(this.response);

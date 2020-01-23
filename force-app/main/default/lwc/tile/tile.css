@@ -4,8 +4,7 @@
     background-color: white;
     margin:5px;
     padding: 2px;
-    max-width: 130px;
-    
+    width: 100px;
 }
 .container:hover {
     box-shadow: 2px 8px 45px rgba(0, 0, 0, .8);
@@ -13,7 +12,7 @@
   }
 
 .product-img {
-    max-width: 100px;
+    width: 90px;
 }
 
 a {

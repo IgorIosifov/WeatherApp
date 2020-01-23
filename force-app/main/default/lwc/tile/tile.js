@@ -15,6 +15,7 @@ export default class Tile extends LightningElement {
     get timeAndDate(){
         //converting seconds to milliseconds
         return this.weathertodetail.dt*1000;
+        
     }
     
     get temperature() {
