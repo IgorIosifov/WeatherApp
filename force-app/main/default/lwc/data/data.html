@@ -2,9 +2,9 @@
     <div class="container">
         <lightning-input class='input' name='city' placeholder='Enter a city'></lightning-input>
         <div class='buttons'>
-            <button class='button' onclick={getCurrentWeather}>Get current weather</button>
-            <button class='button' onclick={getWeatherForecast}>Get weather forecast</button>
-            <lightning-combobox name="progress" value={value} placeholder={value} options={options}
+            <button class='button' onclick={getCurrentWeather}>NOW</button>
+            <button class='button' onclick={getWeatherForecast}>FORECAST</button>
+            <lightning-combobox variant = "label-hidden" name="progress" value={value} placeholder={value} options={options}
                 onchange={handleChange}></lightning-combobox>
         </div>
 
