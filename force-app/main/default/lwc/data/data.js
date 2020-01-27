@@ -1,9 +1,29 @@
-import { LightningElement,track } from 'lwc';
-import { ShowToastEvent} from 'lightning/platformShowToastEvent';
+import { LightningElement, track } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class Data extends LightningElement {
+    @track currentCity;
 
-    // the next two chains create two different events with response in details
+    // this callback used to show weather and forecast using current location if user wants to
+    connectedCallback() {
+        var init = new Promise(
+            (resolve) => {
+        navigator.geolocation.getCurrentPosition(
+            function(position){
+        resolve ('lat=' + position.coords.latitude 
+        +'&lon='+position.coords.longitude);})})
+
+        init        
+        .then(city => { return this.httpRequest('weather', city)})
+        .then(response => { this.eventsCreator(response) })
+
+        // use result of the previous promise to display forecast
+        init
+        .then(city => { return this.httpRequest('forecast', city, this.days); })
+        .then(response => { this.eventsCreator(response) })
+          
+    }
+
     getCurrentWeather() {
         this.getCityFromInput()
             .then(city => { return this.httpRequest('weather', city); })
@@ -19,8 +39,10 @@ export default class Data extends LightningElement {
     getCityFromInput() {
         return new Promise(
             (resolve, reject) => {
-                const inputCity = this.template.querySelector('lightning-input').value;
-                if (inputCity === '') {
+                let inputCity = this.template.querySelector('lightning-input').value;
+                //case 1. no city to request data
+                if (inputCity === '' && this.currentCity === undefined) {  
+                    console.log(this.currentCity);
                     reject(this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Wrong input',
@@ -29,13 +51,19 @@ export default class Data extends LightningElement {
                             mode: 'pester'
                         })));
                 } else {
-                    resolve(inputCity);
+                    //case 2. there is geolocation and there isn't input city
+                    if (inputCity === '' && this.currentCity !== undefined) {
+                        resolve(this.currentCity);
+                    //case 3. There are both geolocation and input city. Input city is preferable.
+                    } else {
+                        resolve('q=' + inputCity);
+                    }
                 }
             })
     }
-/////////////////////////////////////
-    get days(){
-        return this.value*8;
+
+    get days() {
+        return this.value * 8;
     }
 
     @track value = '1';
@@ -52,13 +80,11 @@ export default class Data extends LightningElement {
     handleChange(event) {
         this.value = event.detail.value;
     }
-/////////////////////////////////////
 
     httpRequest(type, city, days) {
         return new Promise(function (resolve) {
             let request = new XMLHttpRequest();
-            console.log(days);
-            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?q=' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + days;
+            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + days;
             request.open('GET', requestAPI, true);
             request.onload = function () {
                 resolve(this.response);
@@ -75,6 +101,7 @@ export default class Data extends LightningElement {
             if (dataFromAPI.cod >= 200 && dataFromAPI.cod < 400) {
                 //dataFromAPI.cnt == null means that the response contains the current weather,and not several forecasts.
                 if (dataFromAPI.cnt == null) {
+                   this.currentCity = dataFromAPI.name;
                     event = new CustomEvent('weathernow', {
                         detail: dataFromAPI
                     });
