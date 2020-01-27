@@ -8,41 +8,42 @@ export default class Data extends LightningElement {
     connectedCallback() {
         var init = new Promise(
             (resolve) => {
-        navigator.geolocation.getCurrentPosition(
-            function(position){
-        resolve ('lat=' + position.coords.latitude 
-        +'&lon='+position.coords.longitude);})})
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        resolve('lat=' + position.coords.latitude
+                            + '&lon=' + position.coords.longitude);
+                    })
+            })
 
-        init        
-        .then(city => { return this.httpRequest('weather', city)})
-        .then(response => { this.eventsCreator(response) })
+        init
+            .then(city => { return this.httpRequest('weather', city) })
+            .then(response => { this.eventsCreator(response) })
 
         // use result of the previous promise to display forecast
         init
-        .then(city => { return this.httpRequest('forecast', city, this.days); })
-        .then(response => { this.eventsCreator(response) })
-          
+            .then(city => { return this.httpRequest('forecast', city, this.amountOfForecasts); })
+            .then(response => { this.eventsCreator(response) })
+
     }
 
     getCurrentWeather() {
-        this.getCityFromInput()
+        this.getCityFromInputOrGeoLoc()
             .then(city => { return this.httpRequest('weather', city); })
             .then(response => { this.eventsCreator(response) })
     }
 
     getWeatherForecast() {
-        this.getCityFromInput()
-            .then(city => { return this.httpRequest('forecast', city, this.days); })
+        this.getCityFromInputOrGeoLoc()
+            .then(city => { return this.httpRequest('forecast', city, this.amountOfForecasts); })
             .then(response => { this.eventsCreator(response) })
     }
 
-    getCityFromInput() {
+    getCityFromInputOrGeoLoc() {
         return new Promise(
             (resolve, reject) => {
                 let inputCity = this.template.querySelector('lightning-input').value;
                 //case 1. no city to request data
-                if (inputCity === '' && this.currentCity === undefined) {  
-                    console.log(this.currentCity);
+                if (inputCity === '' && this.currentCity === undefined) {
                     reject(this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Wrong input',
@@ -62,29 +63,10 @@ export default class Data extends LightningElement {
             })
     }
 
-    get days() {
-        return this.value * 8;
-    }
-
-    @track value = '1';
-    get options() {
-        return [
-            { label: '1', value: '1' },
-            { label: '2', value: '2' },
-            { label: '3', value: '3' },
-            { label: '4', value: '4' },
-            { label: '5', value: '5' }
-        ];
-    }
-
-    handleChange(event) {
-        this.value = event.detail.value;
-    }
-
-    httpRequest(type, city, days) {
+    httpRequest(type, city, amountOfForecasts) {
         return new Promise(function (resolve) {
             let request = new XMLHttpRequest();
-            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + days;
+            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + amountOfForecasts;
             request.open('GET', requestAPI, true);
             request.onload = function () {
                 resolve(this.response);
@@ -101,7 +83,7 @@ export default class Data extends LightningElement {
             if (dataFromAPI.cod >= 200 && dataFromAPI.cod < 400) {
                 //dataFromAPI.cnt == null means that the response contains the current weather,and not several forecasts.
                 if (dataFromAPI.cnt == null) {
-                   this.currentCity = dataFromAPI.name;
+                    this.currentCity = dataFromAPI.name;
                     event = new CustomEvent('weathernow', {
                         detail: dataFromAPI
                     });
@@ -138,7 +120,31 @@ export default class Data extends LightningElement {
                 mode: 'pester'
             })
         }
-
         this.dispatchEvent(event);
     }
+
+   
+    // value means amount of days from index page
+    @track value = '1';
+
+    // multiply 8 because API returns 8 forecasts per day
+    get amountOfForecasts() {
+        return this.value * 8;
+    }
+    
+    get options() {
+        return [
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+            { label: '3', value: '3' },
+            { label: '4', value: '4' },
+            { label: '5', value: '5' }
+        ];
+    }
+
+    handleChange(event) {
+        this.value = event.detail.value;
+    }
+
+
 }
