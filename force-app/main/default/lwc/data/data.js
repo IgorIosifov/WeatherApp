@@ -66,7 +66,14 @@ export default class Data extends LightningElement {
     httpRequest(type, city, amountOfForecasts) {
         return new Promise(function (resolve) {
             let request = new XMLHttpRequest();
-            let requestAPI = 'https://api.openweathermap.org/data/2.5/' + type + '?' + city + '&appid=be44a17b8f33f7adf056ca9ad4501437&units=metric&cnt=' + amountOfForecasts;
+            const appID = 'be44a17b8f33f7adf056ca9ad4501437';
+            const units = 'metric';
+            let requestAPI = 'https://api.openweathermap.org/data/2.5/' 
+            + type 
+            + '?' + city 
+            + '&appid=' + appID 
+            + '&units='+ units 
+            +'&cnt=' + amountOfForecasts;
             request.open('GET', requestAPI, true);
             request.onload = function () {
                 resolve(this.response);
@@ -93,7 +100,15 @@ export default class Data extends LightningElement {
                     });
                 }
 
-            } if (dataFromAPI.cod >= 400 && dataFromAPI.cod < 500) {
+            } if (dataFromAPI.cod === 401) {
+                event = new ShowToastEvent({
+                    title: 'Subscription has expired',
+                    message: 'Please contact with your manager.Error: ' + dataFromAPI.cod,
+                    variant: 'warning',
+                    mode: 'pester'
+                });
+
+            } if (dataFromAPI.cod >= 400 && dataFromAPI.cod !== 401 && dataFromAPI.cod < 500) {
                 event = new ShowToastEvent({
                     title: 'Wrong input',
                     message: 'Could not find this city. Please check typos or enter regional center.Error: ' + dataFromAPI.cod,
